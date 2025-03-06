@@ -28,7 +28,7 @@ public class ItemController {
     private UserRepo userRepo;
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider; 
+    private JwtTokenProvider jwtTokenProvider;
 
     @PostMapping()
     public ResponseEntity<Item> createItem(@RequestBody Item item, HttpServletRequest request) {

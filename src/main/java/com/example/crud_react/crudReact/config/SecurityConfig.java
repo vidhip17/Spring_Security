@@ -44,6 +44,8 @@ public class SecurityConfig {
                                 .requestMatchers("/api/public/**").permitAll()
                                 .requestMatchers("/api/items/**").hasAnyRole("ADMIN", "USER")
                                 .requestMatchers("/api/user/**").hasAnyRole("ADMIN", "USER")
+                                .requestMatchers("/api/announcements/**").hasAnyRole("ADMIN", "USER")
+                                .requestMatchers("/api/adminDashboard").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 ).exceptionHandling(exceptionHandling ->
                         exceptionHandling

@@ -20,4 +20,6 @@ public interface UserService {
     void delete(Long id);
 
     User findByUsername(String username);
+
+    User updateCurrentRole(Long id, String role);
 }

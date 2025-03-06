@@ -50,6 +50,7 @@ public class LoginController {
         Set<String> roles = new HashSet<>();
         roles.add("USER");
         user.setRoles(roles);
+        user.setCurrentRole(roles.stream().findFirst().orElse(null));
 
         userService.save(user);
         return new ResponseEntity<>("SUCCESS", HttpStatus.CREATED);
@@ -62,11 +63,11 @@ public class LoginController {
         User user = userRepo.findByUserNameOrEmail(loginRequest.getUsername());
 
         if(user == null) {
-            return new ResponseEntity<>(new LoginDto("USERNOTFOUND", null, null, null), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new LoginDto(null, "USERNOTFOUND", null, null, null, null), HttpStatus.NOT_FOUND);
         } else {
             Boolean matche = passwordEncoder.matches(loginRequest.getPassword(), user.getPassword());
             if(!matche) {
-                return new ResponseEntity<>(new LoginDto("PASSWORDNOTMATCH", null, null, null), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new LoginDto(null, "PASSWORDNOTMATCH", null, null, null, null), HttpStatus.BAD_REQUEST);
             }
         }
 
@@ -78,9 +79,15 @@ public class LoginController {
         String token = jwtTokenProvider.generateToken(loginRequest.getUsername());
 
         LoginDto loginDto = new LoginDto();
+        loginDto.setUserId(user.getId());
         loginDto.setToken(token);
         loginDto.setUsername(user.getUserName());
         loginDto.setRole(user.getRoles().toString());
+        if(user.getCurrentRole() == null) {
+            user.setCurrentRole(user.getRoles().stream().findFirst().orElse(null));
+            userRepo.save(user);
+        }
+        loginDto.setCurrentRole(user.getCurrentRole());
         return ResponseEntity.ok(loginDto);
     }
 

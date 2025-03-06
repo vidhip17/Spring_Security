@@ -74,5 +74,19 @@ public class userController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/update-role/{userId}")
+    public ResponseEntity<?> updateRole(@PathVariable Long userId, @RequestBody String newRole) {
+        try {
+            User updatedUser = userService.updateCurrentRole(userId, newRole);
+            if (updatedUser != null) {
+                return ResponseEntity.ok(updatedUser);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update role");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating role");
+        }
+    }
+
 
 }

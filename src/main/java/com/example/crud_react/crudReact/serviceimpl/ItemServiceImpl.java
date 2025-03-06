@@ -6,6 +6,9 @@ import com.example.crud_react.crudReact.service.ItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,18 +28,21 @@ public class ItemServiceImpl implements ItemService {
         return itemRepo.findAll();
     }
 
+//    @Cacheable(value = "items", key = "#id")
     @Override
     public Optional<Item> findById(Integer id) {
         logger.info("itemservice findById() called");
         return itemRepo.findById(id);
     }
 
+//    @CacheEvict(value = "items", key = "#item.id")
     @Override
     public Item save(Item item) {
         logger.info("itemservice save() called");
         return itemRepo.save(item);
     }
 
+//    @CachePut(value = "items", key = "#item.id")
     @Override
     public Item update(Integer id, Item item) {
         logger.info("itemservice update() called");
@@ -50,6 +56,7 @@ public class ItemServiceImpl implements ItemService {
         return null;
     }
 
+    @CacheEvict(value = "items", key = "#id")
     @Override
     public void delete(Integer id) {
         logger.info("itemservice delete() called");

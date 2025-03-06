@@ -68,4 +68,16 @@ public class UserServiceImpl implements UserService {
         logger.info("findBy username");
         return userRepo.findByUserName(username);
     }
+
+    @Override
+    public User updateCurrentRole(Long id, String role) {
+        logger.info("update current role");
+        Optional<User> userOptional = userRepo.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setCurrentRole(role);
+            return userRepo.save(user);
+        }
+        return null;
+    }
 }

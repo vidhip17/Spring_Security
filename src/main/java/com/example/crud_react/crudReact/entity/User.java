@@ -10,7 +10,9 @@ import java.util.Set;
 @Entity
 @Table(name = "user_master")
 @Data
-public class User{
+public class User implements Serializable {
+    private static final long serialVersionUID = 1L;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +37,9 @@ public class User{
 
     @Column(name = "is_delete")
     private Boolean isDelete = false;
+
+    @Column(name = "currentrole")
+    private String currentRole;
 
     public Long getId() {
         return id;

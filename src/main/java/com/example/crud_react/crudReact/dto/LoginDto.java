@@ -4,10 +4,12 @@ import lombok.Data;
 
 @Data
 public class LoginDto {
+    private Long userId;
     private String username;
     private String role;
     private String token;
     private String message;
+    private String currentRole;
 
     public String getMessage() {
         return message;
@@ -20,11 +22,13 @@ public class LoginDto {
     public LoginDto() {
     }
 
-    public LoginDto(String message, String username, String role, String token) {
+    public LoginDto(Long id, String message, String username, String role, String token, String currentRole) {
+        this.userId = id;
         this.username = username;
         this.role = role;
         this.token = token;
         this.message = message;
+        this.currentRole = currentRole;
     }
 
     public String getUsername() {
